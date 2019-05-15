@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Div单选与多选</title>
+    	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div class="boxcode-wrap noMargin">
+            	<div class="selectCode" :class="chooseNumList.includes(item)?'selectActived':''" v-for="(item, index) in chargeBoxList" :key="item" @click="chooseCode(item)">{{item}}</div>
+            </div>
+            <div class="select-btn">
+            	<a @click="selectAll">{{(chooseNumList.length == chargeBoxList.length) ? '全不选':'全选'}}</a>
+            </div>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					chargeBoxList: [
+	                	'600588',
+	                	'600909',
+	                	'608909',
+	                	'200588',
+	                	'200343',
+	                	'123456',
+	                	'121123'
+	                ],
+	                chooseNumList: []
+				},
+				created() {
+			        
+				},
+				watch: {
+					
+				},
+				methods:{
+					/**
+		             * 编号选择
+		             * @param  {Number} item 设备编号
+		             * @return {Null}       无返回
+		             */
+		            chooseCode(item) {
+		            	if (this.chooseNumList.includes(item)) {
+		            		let selectedIndex = this.chooseNumList.indexOf(item);
+		            		this.chooseNumList.splice(selectedIndex, 1);
+		            	}else {
+		            		this.chooseNumList.push(item);
+		            	}
+		            },
+		            /**
+		             * 全选
+		             * @return {Null} 无返回
+		             */
+		            selectAll() {
+		            	if (this.chooseNumList.length == this.chargeBoxList.length) {
+		            		// 如果this.chooseNumList长度与this.chargeBoxList长度相等，即全选，此时点击为取消全选
+		            		this.chooseNumList = [];
+		            	} else {
+		            		// 全选
+		            		let midArray = [];
+			            	this.chargeBoxList.forEach((value,index) =>{
+			            		midArray.push(value);
+			            	});
+			            	midArray = midArray.concat(this.chooseNumList);
+			            	// 如果this.chooseNumList已存有元素，进行去重操作
+			            	this.chooseNumList = Array.from(new Set(midArray));
+		            	}
+		            }
+				},
+				filters: {
+					
+				}
+			})
+		</script>
+	</body>
+</html>
+<style>
+	.noMargin {
+		margin: 0;
+	}
+	.boxcode-wrap{
+		display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: row;
+	}
+	.selectCode {
+      	width: 5rem;
+        height: 1.5rem;
+        line-height: 1.5rem;
+        text-align: center;
+        border: 1px solid #74c41a;
+        background: #fff;
+        font-size: 0.28rem;
+        border-radius: 4px;
+        margin: 5px;
+    }
+    .selectActived {
+    	background: #74c41a;
+    	color: #fff;
+    }
+    .select-btn {
+    	display: flex;
+    }
+    .select-btn a{
+    	width: 5rem;
+    	height: 1.5rem;
+    	line-height: 1.5rem;
+    	border: 1px solid #74c41a;
+    	font-size: 0.28rem;
+        border-radius: 4px;
+        text-align: center;
+    }
+</style>
